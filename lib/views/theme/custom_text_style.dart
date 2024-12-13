@@ -12,9 +12,9 @@ class CustomTextStyle {
     color: Colors.red
   );
 
-  static const TextStyle body = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.normal,
+  static const TextStyle heading2 = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
   );
 
   static const TextStyle caption = TextStyle(
