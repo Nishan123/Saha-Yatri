@@ -60,9 +60,9 @@ class _BookingScreenState extends State<BookingScreen> {
               "Enter details",
               style: CustomTextStyle.heading2,
             ),
-            CustomDropdown(),
-            CustomDropdown(),
-            CustomDropdown(),
+            CustomDropdown(options: ["NSIAN","NKSADBF","BJHSDF"],initialValue: "NSIAN",),
+            CustomDropdown(options: ["NSIAN","NKSADBF","BJHSDF"],initialValue: "NSIAN",),
+            CustomDropdown(options: ["NSIAN","NKSADBF","BJHSDF"],initialValue: "NSIAN",),
             const SizedBox(
               height: 10,
             ),

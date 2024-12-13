@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
 
 class CustomDropdown extends StatefulWidget {
-  const CustomDropdown({Key? key}) : super(key: key);
+  final List<String> options; // List of options passed to the widget
+  final String? initialValue; // Optional initial value
+  final void Function(String)? onChanged; // Optional callback for value change
+
+  const CustomDropdown({
+    Key? key,
+    required this.options, // Ensure options are required
+    this.initialValue,
+    this.onChanged,
+  }) : super(key: key);
 
   @override
   State<CustomDropdown> createState() => _CustomDropdownState();
 }
 
 class _CustomDropdownState extends State<CustomDropdown> {
-  String selectedValue = "One"; // Default value
+  late String selectedValue; // State variable for selected value
+
+  @override
+  void initState() {
+    super.initState();
+    // Set initial value or fallback to the first option
+    selectedValue = widget.initialValue ?? widget.options.first;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +37,6 @@ class _CustomDropdownState extends State<CustomDropdown> {
         borderRadius: BorderRadius.circular(14),
       ),
       child: PopupMenuButton<String>(
-        
         offset: const Offset(0, 40),
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -31,22 +46,17 @@ class _CustomDropdownState extends State<CustomDropdown> {
           setState(() {
             selectedValue = value;
           });
+          if (widget.onChanged != null) {
+            widget.onChanged!(value); // Notify parent if callback is provided
+          }
         },
         itemBuilder: (BuildContext context) {
-          return [
-            PopupMenuItem(
-              value: "One",
-              child: const Text("One"),
-            ),
-            PopupMenuItem(
-              value: "Two",
-              child: const Text("Two"),
-            ),
-            PopupMenuItem(
-              value: "Three",
-              child: const Text("Three"),
-            ),
-          ];
+          return widget.options
+              .map((option) => PopupMenuItem(
+                    value: option,
+                    child: Text(option),
+                  ))
+              .toList();
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

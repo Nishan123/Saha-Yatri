@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // Fetch data from the API
   Future<void> fetchDestinations() async {
     const String apiUrl =
-"https://script.googleusercontent.com/macros/echo?user_content_key=IU9F1Lc33810l0uA1PGT8sGOhRW3wcn2hK81C7oHQyZrQgQI7scj4bUmJVBVA-sNb88zJG0wHTHbyxAsADx3IOw4mpoITaWTm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnHuIHL5OsL_4ctSPHtYaRvx0tL0oe2oDLMGykNkHNhGIZ5Ikn2d_HsA25h2q5EW7uBAVfX9VwnI23W6FOcx-WPogtxiUk1bZRQ&lib=Mjl9x6d0obvhsda87gAiPP80BbcbIvll7";
+        "https://script.googleusercontent.com/macros/echo?user_content_key=IU9F1Lc33810l0uA1PGT8sGOhRW3wcn2hK81C7oHQyZrQgQI7scj4bUmJVBVA-sNb88zJG0wHTHbyxAsADx3IOw4mpoITaWTm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnHuIHL5OsL_4ctSPHtYaRvx0tL0oe2oDLMGykNkHNhGIZ5Ikn2d_HsA25h2q5EW7uBAVfX9VwnI23W6FOcx-WPogtxiUk1bZRQ&lib=Mjl9x6d0obvhsda87gAiPP80BbcbIvll7";
     try {
       final response = await http.get(Uri.parse(apiUrl));
 
@@ -42,15 +42,18 @@ class _HomeScreenState extends State<HomeScreen> {
         final data = json.decode(response.body);
 
         setState(() {
-          destinations = data['data']; // Update with fetched data
+          if (mounted) {
+            setState(() {
+              destinations = data['data'];
+            });
+          }
         });
       } else {
         throw Exception('Failed to fetch destinations');
       }
     } catch (e) {
-      print('Error: $e');
       setState(() {
-        destinations = []; // Empty list on error
+        destinations = [];
       });
     }
   }
@@ -63,7 +66,11 @@ class _HomeScreenState extends State<HomeScreen> {
           await _authService.fetchUserData(uid: currentUserUid);
 
       setState(() {
-        username = userData!['username'] ?? 'Guest';
+        if (mounted) {
+          setState(() {
+            username = userData!['username'] ?? 'Guest';
+          });
+        }
       });
     } catch (e) {
       _authService.showToast(
@@ -83,12 +90,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SafeArea(
-          child: ListView(
-            clipBehavior: Clip.none,
+          child: Column(
             children: [
-              CurrentLocationWidget(
-                locationData: GeoService().getLocation(),
-              ),
+              // Non-scrollable widgets
+              CurrentLocationWidget(locationData: GeoService().getLocation()),
               SearchBarField(
                 hintText: "Search your Saha-Yatri / destination",
                 controller: searchController,
@@ -98,32 +103,22 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 10),
               const CustomChoiceChip(),
               const SizedBox(height: 10),
-              // Dynamically display data instead of hardcoded values
-              destinations.isNotEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: destinations.length,
-                      itemBuilder: (context, index) {
-                        final destination = destinations[index];
-                        final imageUrl = destination['imageUrl']?.isNotEmpty ==
-                                true
-                            ? destination['imageUrl']
-                            : 'https://source.unsplash.com/random/800x600';
-
-                        return DestinationCard(
-                          image: imageUrl,
-                          destinationName:
-                              destination['destination'],
-                          destinationAddress:
-                              destination['location'],
-                          distance: destination['distance'],
-                        );
-                      },
-                    )
-                  : const Center(
-                      child: CircularProgressIndicator(),
-                    ),
+              // Expandable scrolling list
+              Expanded(
+                child: destinations.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: destinations.length,
+                        itemBuilder: (context, index) {
+                          final destination = destinations[index];
+                          return DestinationCard(
+                            destinationName: destination['destination'],
+                            destinationAddress: destination['location'],
+                            distance: destination['distance'],
+                          );
+                        },
+                      )
+                    : const Center(child: CircularProgressIndicator()),
+              ),
             ],
           ),
         ),

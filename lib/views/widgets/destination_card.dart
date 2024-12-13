@@ -6,13 +6,13 @@ class DestinationCard extends StatelessWidget {
   final String destinationName;
   final String destinationAddress;
   final String distance;
-  final String image;
+  // final String image;
   const DestinationCard({
     super.key,
     required this.destinationName,
     required this.destinationAddress,
     required this.distance,
-    required this.image,
+    // required this.image,
   });
 
   @override
@@ -46,7 +46,10 @@ class DestinationCard extends StatelessWidget {
                 color: Colors.black12,
                 borderRadius: BorderRadius.circular(30),
               ),
-              child: Center(child: Image.network(image),)
+              // child: FadeInImage.assetNetwork(
+              //   placeholder: "assets/tourists.png",
+              //   image: image,
+              // ),
             ),
             const SizedBox(
               height: 8,
