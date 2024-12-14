@@ -90,27 +90,34 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: SafeArea(
-          child: Column(
-            children: [
-              // Non-scrollable widgets
-              CurrentLocationWidget(locationData: GeoService().getLocation()),
-              SearchBarField(
-                hintText: "Search your Saha-Yatri / destination",
-                controller: searchController,
-                prefixIcon: const Icon(FeatherIcons.search),
-              ),
-              const TopGuides(),
-              const SizedBox(height: 10),
-              const CustomChoiceChip(),
-              const SizedBox(height: 10),
-              // Expandable scrolling list
-              Expanded(
-                child: destinations.isNotEmpty
+          child: SingleChildScrollView(
+            clipBehavior: Clip.none,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CurrentLocationWidget(locationData: GeoService().getLocation()),
+                const SizedBox(height: 10),
+                SearchBarField(
+                  hintText: "Search your Saha-Yatri / destination",
+                  controller: searchController,
+                  prefixIcon: const Icon(FeatherIcons.search),
+                ),
+                const SizedBox(height: 10),
+                const TopGuides(),
+                const SizedBox(height: 10),
+                const CustomChoiceChip(),
+                const SizedBox(height: 10),
+                // Wrap ListView.builder in a fixed-height Container
+                destinations.isNotEmpty
                     ? ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        clipBehavior: Clip.none,
                         itemCount: destinations.length,
                         itemBuilder: (context, index) {
                           final destination = destinations[index];
                           return DestinationCard(
+                            image: destination['imageUrl'],
                             destinationName: destination['destination'],
                             destinationAddress: destination['location'],
                             distance: destination['distance'],
@@ -118,8 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       )
                     : const Center(child: CircularProgressIndicator()),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

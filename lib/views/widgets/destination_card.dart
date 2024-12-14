@@ -6,13 +6,13 @@ class DestinationCard extends StatelessWidget {
   final String destinationName;
   final String destinationAddress;
   final String distance;
-  // final String image;
+  final String image;
   const DestinationCard({
     super.key,
     required this.destinationName,
     required this.destinationAddress,
     required this.distance,
-    // required this.image,
+    required this.image,
   });
 
   @override
@@ -46,10 +46,15 @@ class DestinationCard extends StatelessWidget {
                 color: Colors.black12,
                 borderRadius: BorderRadius.circular(30),
               ),
-              // child: FadeInImage.assetNetwork(
-              //   placeholder: "assets/tourists.png",
-              //   image: image,
-              // ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(
+                    25), // Match with Container's borderRadius
+                child: FadeInImage.assetNetwork(
+                  placeholder: "assets/tourists.png",
+                  fit: BoxFit.cover,
+                  image: image,
+                ),
+              ),
             ),
             const SizedBox(
               height: 8,
@@ -64,7 +69,7 @@ class DestinationCard extends StatelessWidget {
               destinationAddress,
               style: const TextStyle(
                 fontSize: 14,
-                color: Colors.black38,
+                color: Colors.black87,
               ),
             ),
             Row(
@@ -72,7 +77,7 @@ class DestinationCard extends StatelessWidget {
                 const Icon(
                   FeatherIcons.mapPin,
                   size: 14,
-                  color: Colors.black38,
+                  color: Colors.black87,
                 ),
                 const SizedBox(
                   width: 6,
@@ -81,7 +86,7 @@ class DestinationCard extends StatelessWidget {
                   distance,
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Colors.black38,
+                    color: Colors.black87,
                   ),
                 ),
               ],
