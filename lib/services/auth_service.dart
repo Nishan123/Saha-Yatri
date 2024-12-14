@@ -90,6 +90,22 @@ class AuthService {
       return null;
     }
   }
+   Future<void> saveChanges(String username, String email, String phone, String profilePic) async {
+    try {
+      String currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+      await FirebaseFirestore.instance.collection('users').doc(currentUserUid).set({
+        'username': username,
+        'email': email,
+        'phone': phone,
+        'profilePic':profilePic
+      }, SetOptions(merge: true));
+
+      showToast("Profile updated successfully!", Colors.green, Colors.white);
+    } catch (e) {
+      showToast("Failed to update profile.", Colors.red, Colors.white);
+    }
+  }
+  
 
   Future<UserCredential?> signUp(
       String email, String password, String username) async {
@@ -140,4 +156,5 @@ class AuthService {
       return null;
     }
   }
+  
 }

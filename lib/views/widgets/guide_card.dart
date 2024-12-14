@@ -3,7 +3,15 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:saha_yatri/views/screens/guides_profile.dart';
 
 class GuideCard extends StatelessWidget {
-  const GuideCard({super.key});
+  final String name;
+  final String phone;
+  final String experience;
+  const GuideCard({
+    super.key,
+    required this.name,
+    required this.phone,
+    required this.experience,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -52,20 +60,20 @@ class GuideCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Guide's name",
+                       Text(
+                        name,
                         style: TextStyle(
                           fontSize: 16,
                         ),
                       ),
-                      const Text(
-                        "Availibility",
+                       Text(
+                        phone,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black45,
                         ),
                       ),
-                      const Row(
+                       Row(
                         children: [
                           Icon(
                             FeatherIcons.clock,
@@ -76,7 +84,7 @@ class GuideCard extends StatelessWidget {
                             width: 4,
                           ),
                           Text(
-                            "Experience",
+                            experience,
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.black45,

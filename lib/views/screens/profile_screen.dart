@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -18,14 +19,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController phoneController = TextEditingController();
 
   final AuthService _authService = AuthService();
+  bool showPhoneWarning = false;
 
   @override
   void initState() {
     super.initState();
     fetchAndSetUserData();
+
+    // Add listener to phoneController
+    phoneController.addListener(() {
+      if (phoneController.text != "98........" && showPhoneWarning) {
+        setState(() {
+          showPhoneWarning = false;
+        });
+      }
+    });
   }
 
-// Loading data from Firestore database
+  @override
+  void dispose() {
+    // Dispose controllers
+    usernameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
+
   Future<void> fetchAndSetUserData() async {
     try {
       String currentUserUid = FirebaseAuth.instance.currentUser!.uid;
@@ -36,12 +55,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
         setState(() {
           usernameController.text = userData['username'] ?? '';
           emailController.text = userData['email'] ?? '';
-          phoneController.text = userData['phone'] ?? 'No Data';
+          phoneController.text = userData['phone'] ?? '98........';
         });
       }
     } catch (e) {
       _authService.showToast(
-          "Unknown error occoured", Colors.red, Colors.white);
+          "Unknown error occurred", Colors.red, Colors.white);
+    }
+  }
+
+  Future<void> saveChanges() async {
+    try {
+      String currentUserUid = FirebaseAuth.instance.currentUser!.uid;
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(currentUserUid)
+          .set({
+        'username': usernameController.text,
+        'email': emailController.text,
+        'phone': phoneController.text,
+      }, SetOptions(merge: true));
+
+      _authService.showToast(
+          "Profile updated successfully!", Colors.green, Colors.white);
+    } catch (e) {
+      _authService.showToast(
+          "Failed to update profile.", Colors.red, Colors.white);
     }
   }
 
@@ -107,13 +146,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     obscureText: false,
                     textInputType: TextInputType.text,
                   ),
+                  showPhoneWarning
+                      ? const Text(
+                          "Enter your phone number to start using service",
+                          style: TextStyle(color: Colors.red),
+                        )
+                      : const SizedBox(),
                   const SizedBox(height: 80),
 
                   // Edit profile button
                   CustomButton(
                     backgroundColor: Colors.black,
                     onPressed: () {
-                      // Add functionality to update profile data if needed
+                      if (phoneController.text == "98........") {
+                        setState(() {
+                          showPhoneWarning = true;
+                        });
+                      } else {
+                        saveChanges();
+                      }
                     },
                     text: "Save changes",
                     textColor: Colors.white,

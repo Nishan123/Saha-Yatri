@@ -21,6 +21,9 @@ class _BookingScreenState extends State<BookingScreen> {
   String selectedLanguage = "English";
   String phone = "";
   String client_name = "";
+  DateTime? startDate; // To store the selected start date
+  DateTime? endDate;   // To store the selected end date
+
   final AuthService _authService = AuthService();
 
   Future<void> fetchAndSetUserData() async {
@@ -139,21 +142,36 @@ class _BookingScreenState extends State<BookingScreen> {
             const SizedBox(
               height: 10,
             ),
-            const CustomDatePicker(
+            CustomDatePicker(
               backgroundColor: Colors.black54,
               textColor: Colors.white,
+              onDateSelected: (DateTime start, DateTime end) {
+                setState(() {
+                  startDate = start;
+                  endDate = end;
+                });
+              },
             ),
             const Spacer(),
             CustomButton(
                 backgroundColor: Colors.black,
                 onPressed: () {
                   String bookingId = randomAlphaNumeric(6);
+
+                  // Format the selected date range as a string
+                  String dateRange = startDate != null && endDate != null
+                      ? "${startDate!.day}/${startDate!.month}/ - ${endDate!.day}/${endDate!.month}/"
+                      : "Not selected";
+
                   Map<String, dynamic> bookingMap = {
                     "client_name": client_name,
+                    "language":selectedLanguage,
                     "destination": selectedDestination,
                     "phone": phone,
                     "no_of_people": selectedNoOfPeople,
+                    "date": dateRange,
                   };
+
                   BookingService().bookRequest(bookingMap, bookingId);
                 },
                 text: "Confirm Booking",
@@ -168,14 +186,17 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 }
 
+
 class CustomDatePicker extends StatefulWidget {
   final Color backgroundColor;
   final Color textColor;
+  final Function(DateTime startDate, DateTime endDate)? onDateSelected;
 
   const CustomDatePicker({
     super.key,
     required this.backgroundColor,
     required this.textColor,
+    this.onDateSelected,
   });
 
   @override
@@ -195,13 +216,25 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     );
 
     if (pickedRange != null) {
-      final int difference =
-          pickedRange.end.difference(pickedRange.start).inDays + 1;
+      final DateTime startDate = pickedRange.start;
+      final DateTime endDate = pickedRange.end;
+
+      final int difference = endDate.difference(startDate).inDays + 1;
 
       setState(() {
-        buttonText = "$difference day(s)";
+        buttonText =
+            "${_formatDate(startDate)} till ${_formatDate(endDate)} = $difference day(s)";
       });
+
+      // Trigger the callback to pass the selected dates to the parent widget
+      if (widget.onDateSelected != null) {
+        widget.onDateSelected!(startDate, endDate);
+      }
     }
+  }
+
+  String _formatDate(DateTime date) {
+    return "${date.day}/${date.month}/${date.year}";
   }
 
   @override
@@ -228,6 +261,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     );
   }
 }
+
 
 class CustomBox extends StatelessWidget {
   const CustomBox({
