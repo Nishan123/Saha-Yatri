@@ -34,7 +34,7 @@ class DestinationScreen extends StatelessWidget {
             children: [
               DestinationImage(
                 mq: mq,
-                image: "assets/tourists.png",
+                image: image,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
