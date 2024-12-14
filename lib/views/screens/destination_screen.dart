@@ -34,7 +34,7 @@ class DestinationScreen extends StatelessWidget {
             children: [
               DestinationImage(
                 mq: mq,
-                image: image,
+                image: "assets/tourists.png",
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -106,11 +106,9 @@ class DestinationScreen extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
-                          RecommandedGuides(),
-                          RecommandedGuides(),
-                          RecommandedGuides(),
-                          RecommandedGuides(),
-                          RecommandedGuides(),
+                          RecommandedGuides(image: "assets/aakash.jpg",),
+                          RecommandedGuides(image: "assets/rohan.jpg",),
+                          RecommandedGuides(image: "assets/dad.jpg",),
                         ],
                       ),
                     )
@@ -126,23 +124,26 @@ class DestinationScreen extends StatelessWidget {
 }
 
 class RecommandedGuides extends StatelessWidget {
+  final String image;
   const RecommandedGuides({
     super.key,
+    required this.image,
   });
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return  Padding(
       padding: EdgeInsets.only(right: 16),
       child: Column(
         children: [
           CircleAvatar(
             radius: 50,
+            backgroundImage:AssetImage(image) ,
           ),
-          SizedBox(
+          const SizedBox(
             height: 2,
           ),
-          Text("Guide's name")
+          const Text("Guide's name")
         ],
       ),
     );

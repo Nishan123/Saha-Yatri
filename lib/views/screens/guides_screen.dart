@@ -75,6 +75,7 @@ class _GuidesScreenState extends State<GuidesScreen> {
                           name: name,
                           phone: phone,
                           experience: experience,
+                          image: 'assets/dad.jpg',
                         );
                       },
                     );

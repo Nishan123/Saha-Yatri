@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -20,29 +21,47 @@ class _BookingScreenState extends State<BookingScreen> {
   String selectedNoOfPeople = "1";
   String selectedLanguage = "English";
   String phone = "";
-  String client_name = "";
+  String clientId = "";
+  String clientName = "";
   DateTime? startDate; // To store the selected start date
-  DateTime? endDate;   // To store the selected end date
+  DateTime? endDate; // To store the selected end date
 
   final AuthService _authService = AuthService();
 
   Future<void> fetchAndSetUserData() async {
     try {
+      // Get the current user UID from Firebase Authentication
       String currentUserUid = FirebaseAuth.instance.currentUser!.uid;
-      Map<String, dynamic>? userData =
-          await _authService.fetchUserData(uid: currentUserUid);
 
-      setState(() {
-        if (mounted) {
-          setState(() {
-            phone = userData!['phone'] ?? 'Not Available';
-            client_name = userData['name'] ?? 'Not Available';
-          });
-        }
-      });
+      // Fetch user data from Firestore 'user' collection, using the current user's UID
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection(
+              'users') // Replace 'users' with your actual Firestore collection name
+          .doc(currentUserUid)
+          .get();
+
+      if (userDoc.exists) {
+        // Extract the data from the document
+        Map<String, dynamic>? userData = userDoc.data() as Map<String, dynamic>;
+
+        // Update state with user data
+        setState(() {
+          if (mounted) {
+            phone = userData['phone'] ?? 'Not Available';
+            clientName = userData['username'] ?? 'Not Available';
+            clientId =
+                userData['uid'] ?? 'N/A'; // Adjust the field name as needed
+          }
+        });
+      } else {
+        // Handle case where the document doesn't exist
+        _authService.showToast(
+            "User document does not exist", Colors.red, Colors.white);
+      }
     } catch (e) {
+      // Handle any errors
       _authService.showToast(
-          "Unknown error occurred", Colors.red, Colors.white);
+          "Unknown error occurred: $e", Colors.red, Colors.white);
     }
   }
 
@@ -64,12 +83,12 @@ class _BookingScreenState extends State<BookingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+           const Row(
               children: [
-                CircleAvatar(
+                 CircleAvatar(
                   radius: 50,
                 ),
-                SizedBox(
+                 SizedBox(
                   width: 10,
                 ),
                 Column(
@@ -84,7 +103,7 @@ class _BookingScreenState extends State<BookingScreen> {
                       icon: FeatherIcons.clock,
                     ),
                     Text(
-                      "Pricing",
+                      "\$50 per day",
                       style: CustomTextStyle.price,
                     ),
                   ],
@@ -164,8 +183,9 @@ class _BookingScreenState extends State<BookingScreen> {
                       : "Not selected";
 
                   Map<String, dynamic> bookingMap = {
-                    "client_name": client_name,
-                    "language":selectedLanguage,
+                    "client_name": clientName,
+                    "clientId": clientId,
+                    "language": selectedLanguage,
                     "destination": selectedDestination,
                     "phone": phone,
                     "no_of_people": selectedNoOfPeople,
@@ -186,7 +206,6 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 }
 
-
 class CustomDatePicker extends StatefulWidget {
   final Color backgroundColor;
   final Color textColor;
@@ -205,6 +224,7 @@ class CustomDatePicker extends StatefulWidget {
 
 class _CustomDatePickerState extends State<CustomDatePicker> {
   String buttonText = "No of days";
+  String? price;
 
   Future<void> _pickDateRange(BuildContext context) async {
     final DateTime now = DateTime.now();
@@ -261,7 +281,6 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     );
   }
 }
-
 
 class CustomBox extends StatelessWidget {
   const CustomBox({

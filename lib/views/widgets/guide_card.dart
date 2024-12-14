@@ -6,11 +6,13 @@ class GuideCard extends StatelessWidget {
   final String name;
   final String phone;
   final String experience;
+  final String image;
   const GuideCard({
     super.key,
     required this.name,
     required this.phone,
     required this.experience,
+    required this.image,
   });
 
   @override
@@ -47,6 +49,9 @@ class GuideCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
+                    child: ClipRRect(
+                      child: Image.asset("assets/dad.jpg"),
+                    ),
                     height: 100,
                     width: 100,
                     decoration: BoxDecoration(
@@ -60,20 +65,20 @@ class GuideCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                       Text(
+                      Text(
                         name,
                         style: TextStyle(
                           fontSize: 16,
                         ),
                       ),
-                       Text(
+                      Text(
                         phone,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.black45,
                         ),
                       ),
-                       Row(
+                      Row(
                         children: [
                           Icon(
                             FeatherIcons.clock,

@@ -125,6 +125,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         width: 7,
                       ),
                     ),
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(12), // Apply border radius here
+                      child: Image.asset(
+                        "assets/bishal.jpg",
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 60),
                   CustomTextfield(

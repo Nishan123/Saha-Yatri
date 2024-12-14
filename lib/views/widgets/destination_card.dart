@@ -64,10 +64,10 @@ class DestinationCard extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(
-                    25), // Match with Container's borderRadius
+                    25),
                 child: FadeInImage.assetNetwork(
                   placeholder: "assets/tourists.png",
-                  fit: BoxFit.cover,
+                  height: 40,                  
                   image: image,
                 ),
               ),
