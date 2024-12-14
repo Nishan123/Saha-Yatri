@@ -69,6 +69,8 @@ class DestinationCard extends StatelessWidget {
                   placeholder: "assets/tourists.png",
                   height: 40,                  
                   image: image,
+                  fit: BoxFit.cover,
+
                 ),
               ),
             ),
