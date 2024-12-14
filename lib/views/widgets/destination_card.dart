@@ -7,12 +7,19 @@ class DestinationCard extends StatelessWidget {
   final String destinationAddress;
   final String distance;
   final String image;
+  final String tags;
+  final String latLong;
+  final String description;
+
   const DestinationCard({
     super.key,
     required this.destinationName,
     required this.destinationAddress,
     required this.distance,
     required this.image,
+    required this.tags,
+    required this.latLong,
+    required this.description,
   });
 
   @override
@@ -22,7 +29,16 @@ class DestinationCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const DestinationScreen()),
+          MaterialPageRoute(
+              builder: (_) => DestinationScreen(
+                    image: image,
+                    destinationName: destinationName,
+                    distance: distance,
+                    description: description,
+                    tags: tags,
+                    latLong: latLong,
+                    address: destinationAddress,
+                  )),
         );
       },
       child: Padding(

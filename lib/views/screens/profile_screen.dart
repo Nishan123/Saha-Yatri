@@ -17,7 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-
+  final TextEditingController yearOfExpController = TextEditingController();
   final AuthService _authService = AuthService();
   bool showPhoneWarning = false;
 
@@ -42,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     usernameController.dispose();
     emailController.dispose();
     phoneController.dispose();
+    yearOfExpController.dispose();
     super.dispose();
   }
 
@@ -56,6 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           usernameController.text = userData['username'] ?? '';
           emailController.text = userData['email'] ?? '';
           phoneController.text = userData['phone'] ?? '98........';
+          yearOfExpController.text = userData['yearOfExp'] ?? "N/A";
         });
       }
     } catch (e) {

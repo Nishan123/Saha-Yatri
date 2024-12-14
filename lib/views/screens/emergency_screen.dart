@@ -8,26 +8,30 @@ class EmergencyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("Emergency")),
-        body: const SafeArea(
+        body:  SafeArea(
             child: Column(
           children: [
             EmergencyWidgetCard(
+              onTap: (){
+                
+              },
               backgroundColor: Color.fromARGB(255, 255, 103, 103),
               image: "assets/arguing.png",
               title: "Report your guide !",
               subTitle: "Contact with officials",
             ),
             EmergencyWidgetCard(
+              
               backgroundColor: Color.fromARGB(255, 205, 112, 154),
               image: "assets/police.png",
               title: "Call a police",
-              subTitle: "Contact with local police",
+              subTitle: "Contact with local police", onTap: (){},
             ),
             EmergencyWidgetCard(
               backgroundColor: Color.fromARGB(255, 112, 131, 205),
               image: "assets/ambulance.png",
               title: "Medical emergency",
-              subTitle: "Contact with nearby medical service",
+              subTitle: "Contact with nearby medical service", onTap: (){},
             ),
           ],
         )));

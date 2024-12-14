@@ -121,6 +121,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             destinationName: destination['destination'],
                             destinationAddress: destination['location'],
                             distance: destination['distance'],
+                            tags: destination['tags'],
+                            latLong: destination['latitude_longitude'].toString(),
+                            description: destination['description'],
                           );
                         },
                       )
