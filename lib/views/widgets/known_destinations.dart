@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
 class KnownDestinations extends StatelessWidget {
-  const KnownDestinations({super.key});
+  final String image;
+  final String name;
+  const KnownDestinations({
+    super.key,
+    required this.image,
+    required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,17 +17,22 @@ class KnownDestinations extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            
             height: 240,
-      
             width: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(20),
             ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                image,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-          const Text(
-            "Destination name",
+          Text(
+            name,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           )
         ],

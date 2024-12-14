@@ -62,7 +62,7 @@ class GuidesProfile extends StatelessWidget {
                 ),
                 const Divider(),
                 Text(
-                  "Guides Bio dksbfak dfkasdjf aksd vkjasd fkv sdkv smd vksa dvlka sdvk askd vksd v dskv kdfj vkasj dkwaoergerbalsdv lv alsd fb sht se df as fd asg s dag e thq arh eag sd g ad f as dga rrg sdfg da g adsg sdf hg sd fh sdr",
+                  "Eexperienced Nepali trekking guide with over 10 years of guiding trekkers through the Himalayas. Passionate about Nepal's natural beauty, he offers in-depth knowledge of trails, culture, and safety. With a friendly demeanor and expert navigation skills, Ramesh ensures every trekker enjoys an unforgettable adventure.",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const Divider(),
@@ -96,12 +96,23 @@ class GuidesProfile extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                SingleChildScrollView(
+                const SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    children: List.generate(10, (index) {
-                      return const KnownDestinations();
-                    }),
+                    children: [
+                      KnownDestinations(
+                        image: 'assets/god.jpg',
+                        name: 'Boudhanath Stupa',
+                      ),
+                      KnownDestinations(
+                        image: 'assets/temple.jpg',
+                        name: 'Pashupatinath temple',
+                      ),
+                      KnownDestinations(
+                        image: 'assets/garden.jpg',
+                        name: 'Godawari garden',
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(

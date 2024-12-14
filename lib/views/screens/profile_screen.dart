@@ -126,8 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(12), // Apply border radius here
+                      borderRadius: BorderRadius.circular(100),
                       child: Image.asset(
                         "assets/bishal.jpg",
                         fit: BoxFit.cover,
