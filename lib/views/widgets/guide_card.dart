@@ -49,14 +49,15 @@ class GuideCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    child: ClipRRect(
-                      child: Image.asset("assets/dad.jpg"),
-                    ),
                     height: 100,
                     width: 100,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(14)),
+                    child: ClipRRect(
+                      borderRadius:BorderRadius.circular(14),
+                      child: Image.asset("assets/dad.jpg"),
+                    ),
                   ),
                   const SizedBox(
                     width: 10,
@@ -67,30 +68,30 @@ class GuideCard extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: TextStyle(
+                        style:const TextStyle(
                           fontSize: 16,
                         ),
                       ),
                       Text(
                         phone,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Colors.black45,
                         ),
                       ),
                       Row(
                         children: [
-                          Icon(
+                          const Icon(
                             FeatherIcons.clock,
                             size: 16,
                             color: Colors.black45,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 4,
                           ),
                           Text(
                             experience,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                               color: Colors.black45,
                             ),

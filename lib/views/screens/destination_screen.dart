@@ -94,7 +94,7 @@ class DestinationScreen extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    const TagChips(tags: ["One", "Two", "Three", "Four"]),
+                    const TagChips(tags: ["History", "Views", "Food", "Peoples","Monuments"]),
                     const SizedBox(
                       height: 10,
                     ),

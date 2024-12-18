@@ -31,6 +31,9 @@ class GuidesProfile extends StatelessWidget {
                         color: Colors.black12,
                         borderRadius: BorderRadius.circular(30),
                       ),
+                      child:ClipRRect(
+                        child:Image.asset('assets/dad.jpg')
+                      ),
                     ),
                     const SizedBox(width: 10), // Add spacing between elements
                     const Column(
